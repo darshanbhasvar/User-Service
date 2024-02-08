@@ -4,12 +4,15 @@ package com.example.userservicenamam.controllers;
 import com.example.userservicenamam.dtos.LoginRequestDto;
 import com.example.userservicenamam.dtos.LogoutRequestDto;
 import com.example.userservicenamam.dtos.SignUpRequestDto;
+import com.example.userservicenamam.models.Token;
 import com.example.userservicenamam.models.User;
 import com.example.userservicenamam.repository.TokenRepository;
 import com.example.userservicenamam.repository.UserRepository;
 import com.example.userservicenamam.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,12 +31,10 @@ public class UserController {
         this.tokenRepository = tokenRepository;
         this.userService = userService;
     }
-    @GetMapping("/login")
-    public User login(){
-        // check if email and password in db
-        // if yes return user
-        // else throw some error
-        return null;
+    @PostMapping("/login")
+    public Token login(@RequestBody LoginRequestDto requestDto){
+
+        return userService.login(requestDto.getEmail(), requestDto.getPassword());
     }
 
     @PostMapping("/signup")
@@ -43,14 +44,16 @@ public class UserController {
         // for now no need to have email verification either
         String email = request.getEmail();
         String name = request.getName();
-        String passeord = request.getPassword();
+        String password = request.getPassword();
 
-
-        return userService.signup(name,email,passeord);
+        return userService.signup(name,email,password);
     }
-    public ResponseEntity<Void> logout(){
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody LogoutRequestDto requestDto){
         // delete token if exists -> 200
         // if doesn't exist give a 404
-        return null;
+        userService.logout(requestDto.getToken());
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
