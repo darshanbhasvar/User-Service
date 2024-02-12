@@ -9,6 +9,7 @@ import com.example.userservicenamam.models.User;
 import com.example.userservicenamam.repository.TokenRepository;
 import com.example.userservicenamam.repository.UserRepository;
 import com.example.userservicenamam.services.UserService;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +56,10 @@ public class UserController {
         userService.logout(requestDto.getToken());
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/validate/{token}")
+    public User validateToken(@PathVariable @NonNull String token){
+        return userService.validateToken(token);
     }
 }

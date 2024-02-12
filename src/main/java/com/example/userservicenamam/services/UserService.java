@@ -8,6 +8,7 @@ import com.example.userservicenamam.repository.UserRepository;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -69,5 +70,15 @@ public class UserService {
         tkn.setDeleted(true);
         tokenRepository.save(tkn);
         return;
+    }
+
+
+    public User validateToken(String token) {
+        Optional<Token>tkn = tokenRepository.findByValueAndDeletedAndExpiryAtGreaterThan(token,false,new Date());
+
+        if(tkn.isEmpty()){
+            return null;
+        }
+        return tkn.get().getUser();
     }
 }
