@@ -4,6 +4,7 @@ package com.example.userservicenamam.controllers;
 import com.example.userservicenamam.dtos.LoginRequestDto;
 import com.example.userservicenamam.dtos.LogoutRequestDto;
 import com.example.userservicenamam.dtos.SignUpRequestDto;
+import com.example.userservicenamam.dtos.UserDto;
 import com.example.userservicenamam.models.Token;
 import com.example.userservicenamam.models.User;
 import com.example.userservicenamam.repository.TokenRepository;
@@ -59,7 +60,7 @@ public class UserController {
     }
 
     @PostMapping("/validate/{token}")
-    public User validateToken(@PathVariable @NonNull String token){
-        return userService.validateToken(token);
+    public UserDto validateToken(@PathVariable @NonNull String token){
+        return UserDto.from(userService.validateToken(token));
     }
 }
