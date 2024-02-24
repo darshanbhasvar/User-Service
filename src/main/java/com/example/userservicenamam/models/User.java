@@ -18,5 +18,4 @@ public class User extends BaseModel{
     @ManyToMany
     private List<Role> roles;
     private boolean isEmailVerified;
-
 }
