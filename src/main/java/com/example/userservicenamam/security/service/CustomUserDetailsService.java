@@ -28,5 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         CustomUserDetails userDetails = new CustomUserDetails(userOptional.get());
 
         return userDetails;
+        System.out.println("Hello");
     }
 }
